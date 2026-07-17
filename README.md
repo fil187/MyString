@@ -1,4 +1,4 @@
-# Priority Queue implementation
+# String implementation
 ![Learning](https://img.shields.io/badge/status-learning-blue)
 
 A String implementation in C++.
