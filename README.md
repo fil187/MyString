@@ -8,9 +8,9 @@ This project was created as part of a learning exercise to understand data struc
 ## Features
 
 - String implementation
-- String concatination
-- String equality comparaison
-- Assignement operation
+- String concatenation
+- String equality comparison
+- Assignment operation
 - String search
 
 ## Building
