@@ -6,6 +6,11 @@ class MyString {
 
 private:
     
+    /**
+     * @invariant size <= capacity
+     * @invariant data is never a nullptr
+     * @invariant the allocated memory for data is equal to capacity * sizeof(T)
+     */
     size_t size;
     size_t capacity;
     char* data;
@@ -14,23 +19,28 @@ private:
 
 public:
     
-    MyString(): MyString(DEFAULT_CAPACITY) {
-        // constructor with default capacity (128);
-    }
+    /**
+     * Construct an empty Heap with the default capacity (128)
+     */
+    MyString() : MyString(DEFAULT_CAPACITY) {}
 
-    MyString(size_t capacity): size(0), capacity(capacity) {
-        // constructor with capacity as parameter
-        // throws illegal argument exception if capacity is null
-        // @param capacity -> capacity to build the string with
+    /**
+     * Construct an empty String with the defined capacity
+     * @param capacity capacity to build the data array from
+     * @throws std::invalid_argument if the capacity is null
+     */
+    MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
             throw std::invalid_argument("capacity must be greater than 0");
 
         data = new char[capacity];
     }
 
-    MyString(const std::string& source): size(source.length()), capacity(max(DEFAULT_CAPACITY, source.length())) {
-        // constructor from string source
-        // @param source -> source to build the string from
+    /**
+     * Construct a MyString Objcet from std::string source Objcet
+     * @param source source to build this MyString Object from
+     */
+    MyString(const std::string& source) : size(source.length()), capacity(max(DEFAULT_CAPACITY, source.length())) {
         data = new char[max(DEFAULT_CAPACITY, source.length())];
         std::copy(source.data(), source.data() + source.length() + 1, data);
     }
@@ -39,6 +49,10 @@ public:
         return size;
     }
 
+    /**
+     * @returns An std::string Object that correspond to the concatination of this String and the source,
+     *          the returned String contrains the data from this String followed by the data from the source
+     */
     std::string operator+(const std::string& source) const {
         char* concatination = new char[size + source.length()];
         std::copy(data, data + size, concatination);
@@ -48,20 +62,30 @@ public:
         return result;
     }
 
+    /**
+     * @throws std::bad_alloc if the allocation fails
+     * @post This data is replaced by the data from the source
+     */
     void operator=(const std::string& source) {
         if (capacity <= source.length())
-            if (!resize(max(2 * capacity, source.length())))
-                return;
+            resize(max(2 * capacity, source.length()));
         
         std::copy(source.data(), source.data() + source.length() + 1, data);
         size = source.length();
     }
 
+    /**
+     * @post This data contains all the original data followed by the data from the source
+     */
     MyString& operator+=(const std::string& source) {
         *this = *this + source;
         return *this;
     }
 
+    /**
+     * @returns True if this String and the source contain the same data,
+     *          otherwise Flase
+     */
     bool operator==(const std::string& source) const {
         
         if (source.length() != size)
@@ -73,7 +97,11 @@ public:
         
         return true;
     }
-
+    
+    /**
+     * @returns True if this String and the source contain the same data,
+     *          otherwise Flase
+     */
     bool operator==(const MyString& source) const {
         
         if (source.length() != size)
@@ -85,7 +113,10 @@ public:
         
         return true;
     }
-
+    
+    /**
+     * @post This data is replaced by the data from the source
+     */
     void operator=(const MyString& source) {
         char* old_data = data;
         data = new char[source.capacity];
@@ -95,8 +126,10 @@ public:
         delete[] old_data;
     }
 
+    /**
+     * @throws std::out_of_range if index >= size
+     */
     char operator[](size_t idx) const {
-        // throws index out of range exception if index >= length
         if (idx >= size)
             throw std::out_of_range("index out of range");
         
@@ -177,21 +210,24 @@ public:
 
 private:
     
-    bool resize(size_t new_capacity) {
+    /**
+     * @throws std::bad_alloc if the allocation fails
+     */
+    void resize(size_t new_capacity) {
         char* new_data = new char[new_capacity];
 
         if (new_data == nullptr)
-            return false;
+            throw std::bad_alloc();
 
         std::copy(data, data + size, new_data);
         char* old_data = data;
         data = new_data;
         delete[] old_data;
         capacity = new_capacity;
-        return true;
     }
 
     inline static size_t max(size_t a, size_t b) {
         return (a >= b) ? a : b;
     }
+
 };
