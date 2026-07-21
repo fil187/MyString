@@ -7,9 +7,10 @@ class MyString {
 private:
     
     /**
+     * @invariant capacity > 0
      * @invariant size <= capacity
-     * @invariant data is never a nullptr
-     * @invariant the allocated memory for data is equal to capacity * sizeof(T)
+     * @invariant data != nullptr
+     * @invariant data points to an allocated array of exactly this->capacity chars.
      */
     size_t size;
     size_t capacity;
@@ -20,14 +21,15 @@ private:
 public:
     
     /**
-     * Construct an empty Heap with the default capacity (128)
+     * Construct an empty Heap with the default capacity.
      */
     MyString() : MyString(DEFAULT_CAPACITY) {}
 
     /**
-     * Construct an empty String with the defined capacity
-     * @param capacity capacity to build the data array from
-     * @throws std::invalid_argument if the capacity is null
+     * Construct an empty String with the specified capacity.
+     * 
+     * @param capacity the capacity of the string.
+     * @throws std::invalid_argument if capacity == 0
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
@@ -37,8 +39,9 @@ public:
     }
 
     /**
-     * Construct a MyString Objcet from std::string source Objcet
-     * @param source source to build this MyString Object from
+     * Constructs a MyString from the contents of a std::string.
+     * 
+     * @param source The std::string whose contents are copied into this MyString
      */
     MyString(const std::string& source) : size(source.length()), capacity(max(DEFAULT_CAPACITY, source.length())) {
         data = new char[max(DEFAULT_CAPACITY, source.length())];
@@ -50,8 +53,7 @@ public:
     }
 
     /**
-     * @returns An std::string Object that correspond to the concatination of this String and the source,
-     *          the returned String contrains the data from this String followed by the data from the source
+     * @return An std::string containing the characters of this String followed by the characters of source.
      */
     std::string operator+(const std::string& source) const {
         char* concatination = new char[size + source.length()];
@@ -64,7 +66,9 @@ public:
 
     /**
      * @throws std::bad_alloc if the allocation fails
-     * @post This data is replaced by the data from the source
+     * 
+     * @post The contents of this String are equal to source
+     * @post The length of this String equals source.length()
      */
     void operator=(const std::string& source) {
         if (capacity <= source.length())
@@ -75,7 +79,23 @@ public:
     }
 
     /**
-     * @post This data contains all the original data followed by the data from the source
+     * @post The contents of this String are equal to source
+     * @post The length of this String equals source.length()
+     */
+    void operator=(const MyString& source) {
+        char* old_data = data;
+        data = new char[source.capacity];
+        std::copy(source.data, source.data + source.size, data);
+        capacity = source.capacity;
+        size = source.size;
+        delete[] old_data;
+    }
+
+    /**
+     * Appends the contents of source to this String.
+     * 
+     * @post This String contains its original contents followed by the contents of source
+     * @post The length of this String is equal to its previous length plus source.length()
      */
     MyString& operator+=(const std::string& source) {
         *this = *this + source;
@@ -83,8 +103,7 @@ public:
     }
 
     /**
-     * @returns True if this String and the source contain the same data,
-     *          otherwise Flase
+     * @return true if this String and source contain the same characters, otherwise false.
      */
     bool operator==(const std::string& source) const {
         
@@ -99,8 +118,7 @@ public:
     }
     
     /**
-     * @returns True if this String and the source contain the same data,
-     *          otherwise Flase
+     * @return true if this String and source contain the same characters, otherwise false.
      */
     bool operator==(const MyString& source) const {
         
@@ -113,21 +131,11 @@ public:
         
         return true;
     }
-    
-    /**
-     * @post This data is replaced by the data from the source
-     */
-    void operator=(const MyString& source) {
-        char* old_data = data;
-        data = new char[source.capacity];
-        std::copy(source.data, source.data + source.size, data);
-        capacity = source.capacity;
-        size = source.size;
-        delete[] old_data;
-    }
 
     /**
-     * @throws std::out_of_range if index >= size
+     * Returns the character at the specified index
+     * 
+     * @throws std::out_of_range if idx >= the length of this String
      */
     char operator[](size_t idx) const {
         if (idx >= size)
@@ -135,7 +143,12 @@ public:
         
         return data[idx];
     }
-
+    
+    /**
+     * Checks whether this String starts with the contents of source.
+     * 
+     * @return true if this String begins with source, otherwise false.
+     */
     bool start_with(const std::string& source) const {
 
         if (source.length() > size)
@@ -148,6 +161,11 @@ public:
         return true;
     }
 
+    /**
+     * Checks whether this String contains source as a substring.
+     * 
+     * @return true if source occurs within this String, otherwise false.
+     */
     bool contains(const std::string& source) const {
 
         if (source.length() > size)
@@ -212,6 +230,10 @@ private:
     
     /**
      * @throws std::bad_alloc if the allocation fails
+     * 
+     * @pre new_capacity > 0
+     * @post The contents of this String are unchanged
+     * @post The capacity of this String is equal to new_capacity
      */
     void resize(size_t new_capacity) {
         char* new_data = new char[new_capacity];
