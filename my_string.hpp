@@ -2,16 +2,18 @@
 #include <stdexcept>
 #include <cstdint>
 
+/**
+ * @brief A dynamically allocated mutable string.
+ * 
+ * @invariant capacity > 0
+ * @invariant size <= capacity
+ * @invariant data != nullptr
+ * @invariant data points to an allocated array of exactly this->capacity chars.
+ */
 class MyString {
 
 private:
-    
-    /**
-     * @invariant capacity > 0
-     * @invariant size <= capacity
-     * @invariant data != nullptr
-     * @invariant data points to an allocated array of exactly this->capacity chars.
-     */
+
     size_t size;
     size_t capacity;
     char* data;
@@ -21,14 +23,14 @@ private:
 public:
     
     /**
-     * Construct an empty Heap with the default capacity.
+     * @brief Construct an empty string with the default capacity.
      */
     MyString() : MyString(DEFAULT_CAPACITY) {}
 
     /**
-     * Construct an empty String with the specified capacity.
+     * @brief Construct an empty string with the specified capacity.
      * 
-     * @param capacity the capacity of the string.
+     * @param capacity The initial storage capacity in characters.
      * @throws std::invalid_argument if capacity == 0
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
@@ -39,21 +41,30 @@ public:
     }
 
     /**
-     * Constructs a MyString from the contents of a std::string.
+     * @brief Constructs a MyString from the contents of a std::string.
      * 
-     * @param source The std::string whose contents are copied into this MyString
+     * @par Complexity
+     *      O(m)
+     * 
+     * @param source The std::string whose contents are copied into this MyString.
      */
     MyString(const std::string& source) : size(source.length()), capacity(std::max(DEFAULT_CAPACITY, source.length())) {
         data = new char[std::max(DEFAULT_CAPACITY, source.length())];
         std::copy(source.data(), source.data() + source.length() + 1, data);
     }
 
+    /**
+     * @return The number of stored elements.
+     */
     size_t length() const {
         return size;
     }
 
     /**
-     * @return An std::string containing the characters of this String followed by the characters of source.
+     * @brief Returns A std::string containing the characters of this string followed by the characters of source.
+     * 
+     * @par Complexity
+     *      O(n + m)
      */
     std::string operator+(const std::string& source) const {
         char* concatination = new char[size + source.length()];
@@ -65,10 +76,15 @@ public:
     }
 
     /**
+     * @brief Replaces the contents of this string with those of source.
+     * 
+     * @par Complexity
+     *      - Worst case O(n)
+     * 
      * @throws std::bad_alloc if the allocation fails
      * 
-     * @post The contents of this String are equal to source
-     * @post The length of this String equals source.length()
+     * @post The contents of this String are equal to source.
+     * @post The length of this String equals the length of the source.
      */
     void operator=(const std::string& source) {
         if (capacity <= source.length())
@@ -79,8 +95,13 @@ public:
     }
 
     /**
-     * @post The contents of this String are equal to source
-     * @post The length of this String equals source.length()
+     * @brief Replaces the contents of this string with those of source.
+     * 
+     * @par Complexity
+     *      Worst case O(n)
+     * 
+     * @post The contents of this String are equal to source.
+     * @post The length of this String equals the length of the source.
      */
     void operator=(const MyString& source) {
         char* old_data = data;
@@ -92,10 +113,13 @@ public:
     }
 
     /**
-     * Appends the contents of source to this String.
+     * @brief Appends the contents of source to this String.
      * 
-     * @post This String contains its original contents followed by the contents of source
-     * @post The length of this String is equal to its previous length plus source.length()
+     * @par Complexity
+     *      Worst case O(n)
+     * 
+     * @post This String contains its original contents followed by the contents of source.
+     * @post The length of this String is equal to its previous length plus the length of the source.
      */
     MyString& operator+=(const std::string& source) {
         *this = *this + source;
@@ -103,7 +127,10 @@ public:
     }
 
     /**
-     * @return true if this String and source contain the same characters, otherwise false.
+     * @brief Returns true if this String and source contain the same characters, otherwise false.
+     * 
+     * @par Complexity
+     *      Worst case O(n)
      */
     bool operator==(const std::string& source) const {
         
@@ -118,7 +145,7 @@ public:
     }
     
     /**
-     * @return true if this String and source contain the same characters, otherwise false.
+     * @brief Returns true if this String and source contain the same characters, otherwise false.
      */
     bool operator==(const MyString& source) const {
         
@@ -133,9 +160,8 @@ public:
     }
 
     /**
-     * Returns the character at the specified index
-     * 
-     * @throws std::out_of_range if idx >= the length of this String
+     * @throws std::out_of_range if idx >= the length of this String.
+     * @return the character at the specified index.
      */
     char operator[](size_t idx) const {
         if (idx >= size)
@@ -145,9 +171,7 @@ public:
     }
     
     /**
-     * Checks whether this String starts with the contents of source.
-     * 
-     * @return true if this String begins with source, otherwise false.
+     * @brief Returns whether this string begins with source.
      */
     bool start_with(const std::string& source) const {
 
@@ -162,9 +186,13 @@ public:
     }
 
     /**
-     * Checks whether this String contains source as a substring.
+     * @brief Returns true if source occurs within this String, otherwise false.
      * 
-     * @return true if source occurs within this String, otherwise false.
+     * @par Complexity 
+     *      Average case O(n + m)
+     *      Worst case O(n * m)
+     * 
+     * @param source The substring to search for.
      */
     bool contains(const std::string& source) const {
 
@@ -229,11 +257,14 @@ public:
 private:
     
     /**
+     * @par Complexity
+     *      Worst case O(n)
+     * 
      * @throws std::bad_alloc if the allocation fails
      * 
      * @pre new_capacity > 0
-     * @post The contents of this String are unchanged
-     * @post The capacity of this String is equal to new_capacity
+     * @post The contents of this string are unchanged
+     * @post The capacity of this string is equal to new_capacity
      */
     void resize(size_t new_capacity) {
         char* new_data = new char[new_capacity];
