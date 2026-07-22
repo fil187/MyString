@@ -43,8 +43,8 @@ public:
      * 
      * @param source The std::string whose contents are copied into this MyString
      */
-    MyString(const std::string& source) : size(source.length()), capacity(max(DEFAULT_CAPACITY, source.length())) {
-        data = new char[max(DEFAULT_CAPACITY, source.length())];
+    MyString(const std::string& source) : size(source.length()), capacity(std::max(DEFAULT_CAPACITY, source.length())) {
+        data = new char[std::max(DEFAULT_CAPACITY, source.length())];
         std::copy(source.data(), source.data() + source.length() + 1, data);
     }
 
@@ -72,7 +72,7 @@ public:
      */
     void operator=(const std::string& source) {
         if (capacity <= source.length())
-            resize(max(2 * capacity, source.length()));
+            resize(std::max(2 * capacity, source.length()));
         
         std::copy(source.data(), source.data() + source.length() + 1, data);
         size = source.length();
@@ -246,10 +246,6 @@ private:
         data = new_data;
         delete[] old_data;
         capacity = new_capacity;
-    }
-
-    inline static size_t max(size_t a, size_t b) {
-        return (a >= b) ? a : b;
     }
 
 };
