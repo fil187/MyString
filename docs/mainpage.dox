@@ -1,0 +1,5 @@
+/**
+ * @mainpage MyString
+ *
+ * A dynamically allocated mutable string implementation.
+ */
