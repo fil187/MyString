@@ -41,12 +41,12 @@ public:
     }
 
     /**
-     * @brief Constructs a MyString from the contents of a std::string.
+     * @brief Constructs a string from the contents of a string source.
      * 
      * @par Complexity
      *      O(m)
      * 
-     * @param source The std::string whose contents are copied into this MyString.
+     * @param source The string whose contents are copied into this string.
      */
     MyString(const std::string& source) : size(source.length()), capacity(std::max(DEFAULT_CAPACITY, source.length())) {
         data = new char[std::max(DEFAULT_CAPACITY, source.length())];
@@ -61,7 +61,7 @@ public:
     }
 
     /**
-     * @brief Returns A std::string containing the characters of this string followed by the characters of source.
+     * @brief Returns a string containing the characters of this string followed by the characters of source.
      * 
      * @par Complexity
      *      O(n + m)
@@ -83,8 +83,8 @@ public:
      * 
      * @throws std::bad_alloc if the allocation fails
      * 
-     * @post The contents of this String are equal to source.
-     * @post The length of this String equals the length of the source.
+     * @post The contents of this string are equal to source.
+     * @post The length of this string equals the length of the source.
      */
     void operator=(const std::string& source) {
         if (capacity <= source.length())
@@ -100,8 +100,8 @@ public:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @post The contents of this String are equal to source.
-     * @post The length of this String equals the length of the source.
+     * @post The contents of this string are equal to source.
+     * @post The length of this string equals the length of the source.
      */
     void operator=(const MyString& source) {
         char* old_data = data;
@@ -113,12 +113,12 @@ public:
     }
 
     /**
-     * @brief Appends the contents of source to this String.
+     * @brief Appends the contents of source to this string.
      * 
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @post This String contains its original contents followed by the contents of source.
+     * @post This string contains its original contents followed by the contents of source.
      * @post The length of this String is equal to its previous length plus the length of the source.
      */
     MyString& operator+=(const std::string& source) {
@@ -127,7 +127,7 @@ public:
     }
 
     /**
-     * @brief Returns true if this String and source contain the same characters, otherwise false.
+     * @brief Returns true if this string and source contain the same characters, otherwise false.
      * 
      * @par Complexity
      *      Worst case O(n)
@@ -145,7 +145,7 @@ public:
     }
     
     /**
-     * @brief Returns true if this String and source contain the same characters, otherwise false.
+     * @brief Returns true if this string and source contain the same characters, otherwise false.
      */
     bool operator==(const MyString& source) const {
         
@@ -160,7 +160,7 @@ public:
     }
 
     /**
-     * @throws std::out_of_range if idx >= the length of this String.
+     * @throws std::out_of_range if idx >= the length of this string.
      * @return the character at the specified index.
      */
     char operator[](size_t idx) const {
@@ -186,7 +186,7 @@ public:
     }
 
     /**
-     * @brief Returns true if source occurs within this String, otherwise false.
+     * @brief Returns true if source occurs within this string, otherwise false.
      * 
      * @par Complexity 
      *      Average case O(n + m)
