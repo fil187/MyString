@@ -31,7 +31,7 @@ public:
      * @brief Construct an empty string with the specified capacity.
      * 
      * @param capacity The initial storage capacity in characters.
-     * @throws std::invalid_argument if capacity == 0
+     * @throw std::invalid_argument if capacity == 0
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
@@ -81,7 +81,7 @@ public:
      * @par Complexity
      *      - Worst case O(n)
      * 
-     * @throws std::bad_alloc if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @post The contents of this string are equal to source.
      * @post The length of this string equals the length of the source.
@@ -160,7 +160,7 @@ public:
     }
 
     /**
-     * @throws std::out_of_range if idx >= the length of this string.
+     * @throw std::out_of_range if idx >= the length of this string.
      * @return the character at the specified index.
      */
     char operator[](size_t idx) const {
@@ -260,7 +260,7 @@ private:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throws std::bad_alloc if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @pre new_capacity > 0
      * @post The contents of this string are unchanged
