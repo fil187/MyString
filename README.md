@@ -5,6 +5,11 @@ A String implementation in C++.
 
 This project was created as part of a learning exercise to understand data structures and algorithms, specifically Strings.
 
+## Documentation
+
+API documentation:
+https://fil187.github.io/MyString/
+
 ## Features
 
 - String implementation
