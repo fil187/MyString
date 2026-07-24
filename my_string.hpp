@@ -5,10 +5,10 @@
 /**
  * @brief A dynamically allocated mutable string.
  * 
- * @invariant capacity > 0
- * @invariant size <= capacity
- * @invariant data != nullptr
- * @invariant data points to an allocated array of exactly this->capacity chars.
+ * @invariant `capacity > 0`
+ * @invariant `size <= capacity`
+ * @invariant `data != nullptr`
+ * @invariant data points to an allocated array of exactly `capacity` chars.
  */
 class MyString {
 
@@ -31,7 +31,7 @@ public:
      * @brief Construct an empty string with the specified capacity.
      * 
      * @param capacity The initial storage capacity in characters.
-     * @throw std::invalid_argument if capacity == 0
+     * @throw `std::invalid_argument` if `capacity == 0`
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
@@ -41,7 +41,7 @@ public:
     }
 
     /**
-     * @brief Constructs a string from the contents of a string source.
+     * @brief Constructs a string from the contents of a string `source`.
      * 
      * @par Complexity
      *      O(m)
@@ -61,7 +61,7 @@ public:
     }
 
     /**
-     * @brief Returns a string containing the characters of this string followed by the characters of source.
+     * @brief Returns a string containing the characters of this string followed by the characters of `source`.
      * 
      * @par Complexity
      *      O(n + m)
@@ -76,14 +76,14 @@ public:
     }
 
     /**
-     * @brief Replaces the contents of this string with those of source.
+     * @brief Replaces the contents of this string with those of `source`.
      * 
      * @par Complexity
      *      - Worst case O(n)
      * 
-     * @throw std::bad_alloc if the allocation fails
+     * @throw `std::bad_alloc` if the allocation fails
      * 
-     * @post The contents of this string are equal to source.
+     * @post The contents of this string are equal to `source`.
      * @post The length of this string equals the length of the source.
      */
     void operator=(const std::string& source) {
@@ -95,12 +95,12 @@ public:
     }
 
     /**
-     * @brief Replaces the contents of this string with those of source.
+     * @brief Replaces the contents of this string with those of `source`.
      * 
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @post The contents of this string are equal to source.
+     * @post The contents of this string are equal to `source`.
      * @post The length of this string equals the length of the source.
      */
     void operator=(const MyString& source) {
@@ -113,12 +113,12 @@ public:
     }
 
     /**
-     * @brief Appends the contents of source to this string.
+     * @brief Appends the contents of `source` to this string.
      * 
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @post This string contains its original contents followed by the contents of source.
+     * @post This string contains its original contents followed by the contents of `source`.
      * @post The length of this String is equal to its previous length plus the length of the source.
      */
     MyString& operator+=(const std::string& source) {
@@ -127,7 +127,7 @@ public:
     }
 
     /**
-     * @brief Returns true if this string and source contain the same characters, otherwise false.
+     * @brief Returns true if this string and `source` contain the same characters, otherwise false.
      * 
      * @par Complexity
      *      Worst case O(n)
@@ -145,7 +145,7 @@ public:
     }
     
     /**
-     * @brief Returns true if this string and source contain the same characters, otherwise false.
+     * @brief Returns true if this string and `source` contain the same characters, otherwise false.
      */
     bool operator==(const MyString& source) const {
         
@@ -160,18 +160,18 @@ public:
     }
 
     /**
-     * @throw std::out_of_range if idx >= the length of this string.
+     * @throw `std::out_of_range` if i greater than or equal to the length of this string.
      * @return the character at the specified index.
      */
-    char operator[](size_t idx) const {
-        if (idx >= size)
+    char operator[](size_t i) const {
+        if (i >= size)
             throw std::out_of_range("index out of range");
         
-        return data[idx];
+        return data[i];
     }
     
     /**
-     * @brief Returns whether this string begins with source.
+     * @brief Returns whether this string begins with `source`.
      */
     bool start_with(const std::string& source) const {
 
@@ -186,7 +186,7 @@ public:
     }
 
     /**
-     * @brief Returns true if source occurs within this string, otherwise false.
+     * @brief Returns true if `source` occurs within this string, otherwise false.
      * 
      * @par Complexity 
      *      Average case O(n + m)
@@ -260,9 +260,9 @@ private:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throw std::bad_alloc if the allocation fails
+     * @throw `std::bad_alloc` if the allocation fails
      * 
-     * @pre new_capacity > 0
+     * @pre `new_capacity > 0`
      * @post The contents of this string are unchanged
      * @post The capacity of this string is equal to new_capacity
      */
