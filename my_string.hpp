@@ -24,6 +24,9 @@ public:
     
     /**
      * @brief Construct an empty string with the default capacity.
+     * 
+     * @throw `std::invalid_argument` if `capacity == 0`
+     * @throw `std::bad_alloc` if the allocation fails
      */
     MyString() : MyString(DEFAULT_CAPACITY) {}
 
@@ -32,12 +35,16 @@ public:
      * 
      * @param capacity The initial storage capacity in characters.
      * @throw `std::invalid_argument` if `capacity == 0`
+     * @throw `std::bad_alloc` if the allocation fails
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
             throw std::invalid_argument("capacity must be greater than 0");
 
         data = new char[capacity];
+
+        if (data == nullptr)
+            throw std::bad_alloc();
     }
 
     /**
@@ -47,9 +54,11 @@ public:
      *      O(m)
      * 
      * @param source The string whose contents are copied into this string.
+     * @throw `std::invalid_argument` if `capacity == 0`
+     * @throw `std::bad_alloc` if the allocation fails
      */
-    MyString(const std::string& source) : size(source.length()), capacity(std::max(DEFAULT_CAPACITY, source.length())) {
-        data = new char[std::max(DEFAULT_CAPACITY, source.length())];
+    MyString(const std::string& source) : MyString(std::max(DEFAULT_CAPACITY, source.length())) {
+        size = source.length();
         std::copy(source.data(), source.data() + source.length() + 1, data);
     }
 
