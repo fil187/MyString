@@ -25,8 +25,8 @@ public:
     /**
      * @brief Construct an empty string with the default capacity.
      * 
-     * @throw `std::invalid_argument` if `capacity == 0`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `capacity == 0`
+     * @throw std::bad_alloc if the allocation fails
      */
     MyString() : MyString(DEFAULT_CAPACITY) {}
 
@@ -34,8 +34,8 @@ public:
      * @brief Construct an empty string with the specified capacity.
      * 
      * @param capacity The initial storage capacity in characters.
-     * @throw `std::invalid_argument` if `capacity == 0`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `capacity == 0`
+     * @throw std::bad_alloc if the allocation fails
      */
     MyString(size_t capacity) : size(0), capacity(capacity) {
         if (capacity == 0)
@@ -54,8 +54,8 @@ public:
      *      O(m)
      * 
      * @param source The string whose contents are copied into this string.
-     * @throw `std::invalid_argument` if `capacity == 0`
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::invalid_argument if `capacity == 0`
+     * @throw std::bad_alloc if the allocation fails
      */
     MyString(const std::string& source) : MyString(std::max(DEFAULT_CAPACITY, source.length())) {
         size = source.length();
@@ -90,7 +90,7 @@ public:
      * @par Complexity
      *      - Worst case O(n)
      * 
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @post The contents of this string are equal to `source`.
      * @post The length of this string equals the length of the source.
@@ -169,7 +169,7 @@ public:
     }
 
     /**
-     * @throw `std::out_of_range` if i greater than or equal to the length of this string.
+     * @throw std::out_of_range if i greater than or equal to the length of this string.
      * @return the character at the specified index.
      */
     char operator[](size_t i) const {
@@ -269,7 +269,7 @@ private:
      * @par Complexity
      *      Worst case O(n)
      * 
-     * @throw `std::bad_alloc` if the allocation fails
+     * @throw std::bad_alloc if the allocation fails
      * 
      * @pre `new_capacity > 0`
      * @post The contents of this string are unchanged
