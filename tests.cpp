@@ -2,15 +2,30 @@
 #include <iostream>
 #include "my_string.hpp"
 
-void testConstructor() {
+void testDefaultConstructor() {
     MyString str1;
-    MyString str2(10);
-    MyString str3("hello world!");
     assert(str1.length() == 0);
-    assert(str2.length() == 0);
-    assert(str3.length() == 12);
-    assert(str3 == "hello world!");
-    std::cout << "constructor tests passed\n";
+    std::cout << "default constructor tests passed\n";
+}
+
+void testConstructorWithCapacity() {
+    MyString str(10);
+    assert(str.length() == 0);
+    std::cout << "constructor with specified capacity passed!\n";
+}
+
+void testConstructorFromString() {
+    MyString str("hello world!");
+    assert(str.length() == 12);
+    assert(str == "hello world!");
+    std::cout << "constructor from specified string passed!\n";
+}
+
+void testCopyConstructor() {
+    MyString str1("hello world!");
+    MyString str2(str1);
+    assert(str1.length() == str2.length());
+    assert(str1 == str1);
 }
 
 void testAddString() {
@@ -25,7 +40,7 @@ void testAddStringWithResize() {
     str += "hello world! this text will resize str.data";
     assert(str.length() == 43);
     assert(str == "hello world! this text will resize str.data");
-    std::cout << "test add provoques resize test passed\n";
+    std::cout << "test add triggers resize test passed\n";
 }
 
 void testEqString() {
@@ -48,6 +63,7 @@ void testConcatination() {
 void testAtIndex() {
     std::string text = "hello world!";
     MyString str(text);
+    assert(str == text);
     for (size_t i = 0; i < str.length(); i++)
         assert(str[i] == text.at(i));
     std::cout << "[] test passed\n";
@@ -83,7 +99,10 @@ void testContains() {
 }
 
 int main() {
-    testConstructor();
+    testDefaultConstructor();
+    testConstructorWithCapacity();
+    testConstructorFromString();
+    testCopyConstructor();
     testAddString();
     testAddStringWithResize();
     testEqString();

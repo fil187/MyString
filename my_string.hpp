@@ -53,12 +53,25 @@ public:
      *      O(m)
      * 
      * @param source The string whose contents are copied into this string.
-     * @throw std::invalid_argument if `capacity == 0`
      * @throw std::bad_alloc if the allocation fails
      */
     MyString(const std::string& source) : MyString(std::max(DEFAULT_CAPACITY, source.length())) {
         size = source.length();
         std::copy(source.data(), source.data() + source.length() + 1, data);
+    }
+
+    /**
+     * @brief Constructs a string from the contents of a string `source`.
+     * 
+     * @par Complexity
+     *      O(m)
+     * 
+     * @param source The string whose contents are copied into this string.
+     * @throw std::bad_alloc if the allocation fails
+     */
+    MyString(const MyString& source) : MyString(source.capacity) {
+        size = source.size;
+        std::copy(source.data, source.data + source.size, data);
     }
 
     /**
