@@ -62,6 +62,7 @@ public:
 
     /**
      * @brief Copy Constructor.
+     * Constructs a string from the contents of a string `source`.
      * 
      * @par Complexity
      *      O(m)
@@ -126,6 +127,7 @@ public:
     }
 
     /**
+     * Replaces the contents of this string with those of `source`.
      * @brief Copy Assignment Operator.
      * 
      * @par Complexity
