@@ -61,7 +61,7 @@ public:
     }
 
     /**
-     * @brief Constructs a string from the contents of a string `source`.
+     * @brief Copy Constructor.
      * 
      * @par Complexity
      *      O(m)
@@ -73,6 +73,16 @@ public:
         size = source.size;
         std::copy(source.data, source.data + source.size, data);
     }
+
+    /**
+     * @note Move construction are disabled because this container's invariants do not permit a moved-from state.
+     */
+    MyString(const MyString&&) = delete;
+
+    /**
+     * @note Move assignment are disabled because this container's invariants do not permit a moved-from state.
+     */
+    MyString& operator=(const MyString&&) = delete;
 
     /**
      * @return The number of stored elements.
@@ -116,7 +126,7 @@ public:
     }
 
     /**
-     * @brief Replaces the contents of this string with those of `source`.
+     * @brief Copy Assignment Operator.
      * 
      * @par Complexity
      *      Worst case O(n)
