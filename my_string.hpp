@@ -76,12 +76,12 @@ public:
     }
 
     /**
-     * @note Move construction are disabled because this container's invariants do not permit a moved-from state.
+     * @note Move construction is disabled because this container's invariants do not permit a moved-from state.
      */
     MyString(const MyString&&) = delete;
 
     /**
-     * @note Move assignment are disabled because this container's invariants do not permit a moved-from state.
+     * @note Move assignment is disabled because this container's invariants do not permit a moved-from state.
      */
     MyString& operator=(const MyString&&) = delete;
 
