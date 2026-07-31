@@ -14,6 +14,15 @@ void testConstructorWithCapacity() {
     std::cout << "constructor with specified capacity passed!\n";
 }
 
+void testConstructorWithInvalidCpacity() {
+    try {
+        MyString(0);
+        assert(false);
+    } catch (std::invalid_argument&) {
+        std::cout << "invalid argument exception test passed\n";
+    }
+}
+
 void testConstructorFromString() {
     MyString str("hello world!");
     assert(str.length() == 12);
@@ -69,6 +78,15 @@ void testAtIndex() {
     std::cout << "[] test passed\n";
 }
 
+void testIndexOutOfBounds() {
+    try {
+        MyString("hello world!")[1000];
+        assert(false);
+    } catch (std::out_of_range&) {
+        std::cout << "out of bounds exception test passed\n";
+    }
+}
+
 void testEqMyString() {
     MyString str1("hello world!");
     MyString str2("hallo werlde");
@@ -101,6 +119,7 @@ void testContains() {
 int main() {
     testDefaultConstructor();
     testConstructorWithCapacity();
+    testConstructorWithInvalidCpacity();
     testConstructorFromString();
     testCopyConstructor();
     testAddString();
@@ -108,6 +127,7 @@ int main() {
     testEqString();
     testConcatination();
     testAtIndex();
+    testIndexOutOfBounds();
     testEqMyString();
     testStartsWith();
     testContains();
