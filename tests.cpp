@@ -33,8 +33,19 @@ void testConstructorFromString() {
 void testCopyConstructor() {
     MyString str1("hello world!");
     MyString str2(str1);
+    assert(str2 == "hello world!");
     assert(str1.length() == str2.length());
-    assert(str1 == str1);
+    assert(str1 == str2);
+    std::cout << "copy constructor test passed\n";
+}
+
+void testCopyConstructorIndependent() {
+    MyString str1("hello world!");
+    MyString str2(str1);
+    assert(str1 == str2);
+    str1 = "hallo werld!";
+    assert(str1 != str2);
+    std::cout << "copy constructor independent test passed\n";
 }
 
 void testAddString() {
@@ -59,6 +70,22 @@ void testEqString() {
     assert(str.length() == 12);
     assert(str == "hello world!");
     std::cout << "string eq test passed\n";
+}
+
+void testEqMyString() {
+    MyString str1("hello world!");
+    MyString str2("hallo werlde");
+    assert(str1 != str2);
+    str1 = str2;
+    assert(str1 == str2);
+    std::cout << "MyString Eq test passed\n";
+}
+
+void testEqSelf() {
+    MyString str1("hello world!");
+    str1 = str1;
+    assert(str1 == "hello world!");
+    std::cout << "assignment to self test passed\n";
 }
 
 void testConcatination() {
@@ -87,15 +114,6 @@ void testIndexOutOfBounds() {
     }
 }
 
-void testEqMyString() {
-    MyString str1("hello world!");
-    MyString str2("hallo werlde");
-    assert(str1 != str2);
-    str1 = str2;
-    assert(str1 == str2);
-    std::cout << "MyString Eq test passed\n";
-}
-
 void testStartsWith() {
     MyString str("hello world!");
     assert(!str.start_with("hallo"));
@@ -122,9 +140,11 @@ int main() {
     testConstructorWithInvalidCpacity();
     testConstructorFromString();
     testCopyConstructor();
+    testCopyConstructorIndependent();
     testAddString();
     testAddStringWithResize();
     testEqString();
+    testEqSelf();
     testConcatination();
     testAtIndex();
     testIndexOutOfBounds();
