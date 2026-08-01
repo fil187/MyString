@@ -1,223 +1,174 @@
-#include <assert.h>
-#include <iostream>
+#include <gtest/gtest.h>
 #include "my_string.hpp"
 
-void testDefaultConstructor() {
+TEST(MyStringTest, DefaultConstructor) {
     MyString str;
-    assert(str.length() == 0);
-    std::cout << "default constructor tests passed\n";
+    EXPECT_EQ(0, str.length());
+    EXPECT_EQ("", str);
 }
 
-void testConstructorWithCapacity() {
+TEST(MyStringTest, ConstructorWithCapacity) {
     MyString str(10);
-    assert(str.length() == 0);
-    std::cout << "constructor with specified capacity passed!\n";
+    EXPECT_EQ(0, str.length());
+    EXPECT_EQ("", str);
 }
 
-void testConstructorWithInvalidCpacity() {
-    try {
-        MyString(0);
-        assert(false);
-    } catch (std::invalid_argument&) {
-        std::cout << "invalid argument exception test passed\n";
-    }
+TEST(MyStringTest, ConstructorWithInvalidCpacity) {
+    EXPECT_THROW(MyString(0), std::invalid_argument);
 }
 
-void testConstructorFromString() {
+TEST(MyStringTest, ConstructorFromString) {
     MyString str("hello world!");
-    assert(str.length() == 12);
-    assert(str == "hello world!");
-    std::cout << "constructor from specified string passed\n";
+    EXPECT_EQ(12, str.length());
+    EXPECT_EQ("hello world!", str);
 }
 
-void testConstructorEmptyString() {
+TEST(MyStringTest, ConstructorEmptyString) {
     MyString str("");
-    assert(str.length() == 0);
-    assert(str == "");
-    std::cout << "constructor from empty string test passed\n";
+    EXPECT_EQ(0, str.length());
+    EXPECT_EQ("", str);
 }
 
-void testCopyConstructor() {
+TEST(MyStringTest, CopyConstructor) {
     MyString str1("hello world!");
     MyString str2(str1);
-    assert(str2 == "hello world!");
-    assert(str1.length() == str2.length());
-    assert(str1 == str2);
-    std::cout << "copy constructor test passed\n";
+    EXPECT_EQ("hello world!", str2);
+    EXPECT_EQ(str1.length(), str2.length());
+    EXPECT_EQ(str1, str2);
 }
 
-void testCopyConstructorIndependent() {
+TEST(MyStringTest, CopyConstructorIndependent) {
     MyString str1("hello world!");
     MyString str2(str1);
-    assert(str1 == str2);
+    EXPECT_EQ(str1, str2);
     str1 = "hallo werld!";
-    assert(str1 != str2);
-    std::cout << "copy constructor independent test passed\n";
+    EXPECT_NE(str1, str2);
 }
 
-void testAddString() {
+TEST(MyStringTest, AddString) {
     MyString str("hello");
-    assert(str + " world!" == "hello world!");
-    assert(str == "hello");
-    assert((str + " world!").length() == 12);
-    std::cout << "string addition test passed\n";
+    EXPECT_EQ("hello world!", str + " world!");
+    EXPECT_EQ("hello", str);
+    EXPECT_EQ(12, (str + " world!").length());
 }
 
-void testAddStringWithSingleResize() {
+TEST(MyStringTest, AddStringWithSingleResize) {
     MyString str(10);
     str += "hello world! this text will resize str.data";
-    assert(str.length() == 43);
-    assert(str == "hello world! this text will resize str.data");
-    std::cout << "test add triggers a single resize test passed\n";
+    EXPECT_EQ(43, str.length());
+    EXPECT_EQ("hello world! this text will resize str.data", str);
 }
 
-void testAddStringWithMultipleResizes() {
+TEST(MyStringTest, AddStringWithMultipleResizes) {
     MyString str(2);
     str += "hello"; // size and capacity are 5 here
+    EXPECT_EQ("hello", str);
+    EXPECT_EQ(5, str.length());
     str += " world!"; // size and capacity are 12 here
-    str += "this text will resize str.data"; // size and capacity are 43 here
-    std::cout << "test add triggers multiple resize test passed\n";
+    EXPECT_EQ("hello world!", str);
+    EXPECT_EQ(12, str.length());
+    str += " this text will resize str.data"; // size and capacity are 43 here
+    EXPECT_EQ("hello world! this text will resize str.data", str);
+    EXPECT_EQ(43, str.length());
 }
 
-void testStringAssignment() {
+TEST(MyStringTest, StringAssignment) {
     MyString str;
-    assert(str.length() == 0);
+    EXPECT_EQ(0, str.length());
     str = "hello world!";
-    assert(str.length() == 12);
-    assert(str == "hello world!");
-    std::cout << "string Assignment test passed\n";
+    EXPECT_EQ(12, str.length());
+    EXPECT_EQ("hello world!", str);
 }
 
-void testAssignmentFromEmptyString() {
+TEST(MyStringTest, AssignmentFromEmptyString) {
     MyString str("hello world!");
     str = "";
-    assert(str.length() == 0);
-    assert(str == "");
-    std::cout << "Assignment from empty string test passed\n";
+    EXPECT_EQ(0, str.length());
+    EXPECT_EQ("", str);
 }
 
-void testMyStringAssignment() {
+TEST(MyStringTest, MyStringAssignment) {
     MyString str1("hello world!");
     MyString str2("hallo werlde");
-    assert(str1 != str2);
+    EXPECT_NE(str1, str2);
     str1 = str2;
-    assert(str1 == str2);
-    std::cout << "MyString Assignment test passed\n";
+    EXPECT_EQ(str1, str2);
 }
 
-void testAssignmentIndependence() {
+TEST(MyStringTest, AssignmentIndependence) {
     MyString str1("hello world!");
     MyString str2;
     str2 = str1;
-    assert(str1 == str2);
+    EXPECT_EQ(str1, str2);
     str1 = "hallo werlde!";
-    assert(str1 != str2);
-    std::cout << "Assignment independent test passed\n";
+    EXPECT_NE(str1, str2);
 }
 
-void testSelfAssignment() {
+TEST(MyStringTest, SelfAssignment) {
     MyString str1("hello world!");
     str1 = str1;
-    assert(str1 == "hello world!");
-    std::cout << "assignment to self test passed\n";
+    EXPECT_EQ("hello world!", str1);
 }
 
-void testConcatination() {
+TEST(MyStringTest, Concatination) {
     MyString str("hello");
     str += " world!";
-    assert(str.length() == 12);
-    assert(str == "hello world!");
-    std::cout << "string concatination test passed\n";
+    EXPECT_EQ(12, str.length());
+    EXPECT_EQ("hello world!", str);
 }
 
-void testConcatintionWithEmptyString() {
-    assert(MyString("hello") + "" == "hello");
-    std::cout << "concatination with empty string test passed\n";
+TEST(MyStringTest, ConcatintionWithEmptyString) {
+    EXPECT_EQ("hello", MyString("hello") + "");
 }
 
-void testConcatinationFromEmptyString() {
-    assert(MyString("") + "" == "");
-    std::cout << "concatination from empty string test passed\n";
+TEST(MyStringTest, ConcatinationFromEmptyString) {
+    EXPECT_EQ("", MyString("") + "");
 }
 
-void testAtIndex() {
+TEST(MyStringTest, AtIndex) {
     std::string text = "hello world!";
     MyString str(text);
-    assert(str == text);
+    EXPECT_EQ(text, str);
     for (size_t i = 0; i < str.length(); i++)
-        assert(str[i] == text.at(i));
-    std::cout << "[] test passed\n";
+        EXPECT_EQ(text.at(i), str[i]);
 }
 
-void testIndexOutOfBounds() {
-    try {
-        MyString("hello world!")[1000];
-        assert(false);
-    } catch (std::out_of_range&) {
-        std::cout << "out of bounds exception test passed\n";
-    }
+TEST(MyStringTest, IndexOutOfBounds) {
+    EXPECT_THROW(MyString("hello world!")[1000], std::out_of_range);
 }
 
-void testIndexJustOutOfBounds() {
-    try {
-        MyString("hello world!")[12];
-        assert(false);
-    } catch (std::out_of_range&) {
-        std::cout << "just out of bounds exception test passed\n";
-    }
+TEST(MyStringTest, IndexJustOutOfBounds) {
+    EXPECT_THROW(MyString("hello world!")[12], std::out_of_range);
 }
 
-void testStartsWith() {
-    assert(!MyString("hello world!").start_with("hallo"));
-    assert(MyString("hello world!").start_with("hello"));
-    std::cout << "starts with test passed\n";
+TEST(MyStringTest, StartsWith) {
+    EXPECT_FALSE(MyString("hello world!").start_with("hallo"));
+    EXPECT_TRUE(MyString("hello world!").start_with("hello"));
 }
 
-void testBasicContains() {
-    assert(!MyString("hello world!").contains("hallo"));
-    assert(MyString("hello world!").contains("hello"));
-    assert(MyString("abababa").contains("ababa"));
-    assert(MyString("abababa").contains("babab"));
-    std::cout << "basic contains test passed\n";
+TEST(MyStringTest, BasicContains) {
+    EXPECT_FALSE(MyString("hello world!").contains("hallo"));
+    EXPECT_TRUE(MyString("hello world!").contains("hello"));
+    EXPECT_TRUE
+    (MyString("abababa").contains("ababa"));
+    EXPECT_TRUE
+    (MyString("abababa").contains("babab"));
 }
 
-void testEmptyStringContains() {
-    assert(MyString("").contains(""));
-    assert(!MyString("").contains("a"));
-    std::cout << "empty string contains test passed\n";
+TEST(MyStringTest, EmptyStringContains) {
+    EXPECT_TRUE(MyString("").contains(""));
+    EXPECT_FALSE(MyString("").contains("a"));
 }
 
-void testComplexStringContains() {
-    assert(MyString("wdYD^\\YmfX`B_mIhQovpLJdEc[XXT\\URX^iaFShNQDYsgAtWlD^ZL\\[YtUXiLfL^MWiQXIuvJTjaOfkk]Th[A[juPaMBwvNWVXQSdyhHaG\\NhGCFUrKrgpxYHRwpxJPkbOpancjbjdhspyXVZicgIK^`CD\\sxWM_lqT]qnO_Yn^GOqYVZWmcTkYKrsOlxne_PzvG[CDTveWI[N^pcAOHAbBcTWilVVXD]hAozPRr[KwCVF`_mL^UBKIxXnWL[ICuVR\\olH]wldUGcHRxqZYbFUqr_qltBWEMC`z[suMYDA[KxEfnNG^DFIzFHdnNWCQH\\Z_PkktdSCAPXCiROojagyE^vXVqShDPgnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vrcZMNMslOzGloWRzdCQpFM]sMBeP]d").contains("gnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vr"));
-    assert(!MyString("wdYD^\\YmfX`B_mIhQovpLJdEc[XXT\\URX^iaFShNQDYsgAtWlD^ZL\\[YtUXiLfL^MWiQXIuvJTjaOfkk]Th[A[juPaMBwvNWVXQSdyhHaG\\NhGCFUrKrgpxYHRwpxJPkbOpancjbjdhspyXVZicgIK^`CD\\sxWM_lqT]qnO_Yn^GOqYVZWmcTkYKrsOlxne_PzvG[CDTveWI[N^pcAOHAbBcTWilVVXD]hAozPRr[KwCVF`_mL^UBKIxXnWL[ICuVR\\olH]wldUGcHRxqZYbFUqr_qltBWEMC`z[suMYDA[KxEfnNG^DFIzFHdnNWCQH\\Z_PkktdSCAPXCiROojagyE^vXVqShDPgnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vrcZMNMslOzGloWRzdCQpFM]sMBeP]d").contains("MvFftnypaKrWN\\PpIpxkeuFoWvOF[fjRSYUVNqvm]^_cuGZdsdKu`FOQTs`nXYqMZso\\ei`sAZ`qE`PMtxkQUHDFXNkBFxZUibvj"));
-    std::cout << "complex string contains test passed\n";
+TEST(MyStringTest, ContainsLongerString) {
+    EXPECT_FALSE(MyString("hello").contains("hello world"));
 }
 
-int main() {
-    testDefaultConstructor();
-    testConstructorWithCapacity();
-    testConstructorWithInvalidCpacity();
-    testConstructorFromString();
-    testCopyConstructor();
-    testCopyConstructorIndependent();
-    testAddString();
-    testAddStringWithSingleResize();
-    testAddStringWithMultipleResizes();
-    testStringAssignment();
-    testAssignmentFromEmptyString();
-    testAssignmentIndependence();
-    testSelfAssignment();
-    testConcatination();
-    testConcatintionWithEmptyString();
-    testConcatinationFromEmptyString();
-    testAtIndex();
-    testIndexOutOfBounds();
-    testIndexJustOutOfBounds();
-    testMyStringAssignment();
-    testStartsWith();
-    testBasicContains();
-    testEmptyStringContains();
-    testComplexStringContains();
-    std::cout << "all tests passed!\n";
-    return 0;
+TEST(MyStringTest, ContainsExactMatch) {
+    EXPECT_TRUE(MyString("hello").contains("hello"));
+}
+
+TEST(MyStringTest, ComplexStringContains) {
+    EXPECT_TRUE(MyString("wdYD^\\YmfX`B_mIhQovpLJdEc[XXT\\URX^iaFShNQDYsgAtWlD^ZL\\[YtUXiLfL^MWiQXIuvJTjaOfkk]Th[A[juPaMBwvNWVXQSdyhHaG\\NhGCFUrKrgpxYHRwpxJPkbOpancjbjdhspyXVZicgIK^`CD\\sxWM_lqT]qnO_Yn^GOqYVZWmcTkYKrsOlxne_PzvG[CDTveWI[N^pcAOHAbBcTWilVVXD]hAozPRr[KwCVF`_mL^UBKIxXnWL[ICuVR\\olH]wldUGcHRxqZYbFUqr_qltBWEMC`z[suMYDA[KxEfnNG^DFIzFHdnNWCQH\\Z_PkktdSCAPXCiROojagyE^vXVqShDPgnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vrcZMNMslOzGloWRzdCQpFM]sMBeP]d").contains("gnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vr"));
+    EXPECT_FALSE(MyString("wdYD^\\YmfX`B_mIhQovpLJdEc[XXT\\URX^iaFShNQDYsgAtWlD^ZL\\[YtUXiLfL^MWiQXIuvJTjaOfkk]Th[A[juPaMBwvNWVXQSdyhHaG\\NhGCFUrKrgpxYHRwpxJPkbOpancjbjdhspyXVZicgIK^`CD\\sxWM_lqT]qnO_Yn^GOqYVZWmcTkYKrsOlxne_PzvG[CDTveWI[N^pcAOHAbBcTWilVVXD]hAozPRr[KwCVF`_mL^UBKIxXnWL[ICuVR\\olH]wldUGcHRxqZYbFUqr_qltBWEMC`z[suMYDA[KxEfnNG^DFIzFHdnNWCQH\\Z_PkktdSCAPXCiROojagyE^vXVqShDPgnnEaKRSN^PzrqteCVuby`njwVsCBrPxhnLnYxzRpFqHLomYoEmbnlbBqzIKSnQqnz_CtnGSDsfa]hfNnkivXhJCgtXUgtdIrVPFSKD_apQC[nk_WTSM\\vrcZMNMslOzGloWRzdCQpFM]sMBeP]d").contains("MvFftnypaKrWN\\PpIpxkeuFoWvOF[fjRSYUVNqvm]^_cuGZdsdKu`FOQTs`nXYqMZso\\ei`sAZ`qE`PMtxkQUHDFXNkBFxZUibvj"));
 }

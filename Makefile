@@ -1,8 +1,9 @@
 CXX = g++
-CXXFLAGS = -std=c++20 -Wall -Wextra
+CXXFLAGS = -std=c++20 -Wall -Wextra -Wpedantic -g -lgtest -lgtest_main -o
+
 
 tests: tests.cpp
-	$(CXX) $(CXXFLAGS) ./tests.cpp -o tests.exe
+	$(CXX) ./tests.cpp $(CXXFLAGS) tests.exe
 
 run: tests
 	./tests.exe
