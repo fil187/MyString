@@ -139,6 +139,7 @@ public:
     void operator=(const MyString& source) {
         if (this == &source)
             return;
+        
         char* old_data = data;
         data = new char[source.capacity];
         std::copy(source.data, source.data + source.size, data);
