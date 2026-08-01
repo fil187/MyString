@@ -6,7 +6,7 @@ tests: tests.cpp
 	$(CXX) ./tests.cpp $(CXXFLAGS) -o tests.exe
 
 run: tests
-	./tests --gtest_output=xml:test-results.xml
+	./tests.exe --gtest_output=xml:test-results.xml
 
 clean:
 	rm tests.exe && rm test-results.xml
