@@ -18,11 +18,17 @@ https://fil187.github.io/MyString/
 - Assignment operation
 - String search
 
-## Building
+## Testing
 
-Requierment:
+The test suite (`tests.cpp`) uses the GoogleTest framework.
+
+### Requirements
+
 - C++ compiler with C++20 support
+- GoogleTest (gtest)
 - GNU Make
+
+### Building 
 
 Build the tests:
 ```bash
